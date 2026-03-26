@@ -7,5 +7,5 @@
 References/*
 __pycache__/
 
-.csv
-.csv.*
+*.csv
+*.csv.*
