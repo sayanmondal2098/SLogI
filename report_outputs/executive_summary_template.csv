@@ -1,0 +1,12 @@
+Metric,Value,Interpretation
+Overall posture,Critical,"Derived from critical-event load, risk-band volume, and source-level anomaly concentration."
+Total SIEM events,"100,000",Total record volume processed by the notebook.
+Critical + emergency events,"20,231",Immediate-response workload based on severity alone.
+High or higher severity events,"40,727","Broader urgent queue including high, critical, and emergency records."
+Risk score >= 60,"31,039",Events in confirmed-threat or critical-threat risk bands.
+Average risk score,50.0,Mean of advanced_metadata risk scores across the dataset.
+Average confidence score,0.499,Mean confidence attached to the advanced metadata scores.
+Top event family,"ai (12,667)",Most common telemetry type in the dataset.
+Top source by volume,"unknown (50,201)",Largest source bucket after src_ip normalization.
+Most concentrated severe source,54.159.34.148 (100.0% critical+),Source with the highest share of critical/emergency traffic.
+Behavioral analytics coverage,"10,060 rows (10.06%)",Share of records carrying behavioral analytics metadata.

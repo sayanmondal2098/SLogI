@@ -1,0 +1,580 @@
+=== Cell 2 ===
+Rows: 100,000
+Columns in CSV: 35
+First 10 columns: ['event_id', 'timestamp', 'event_type', 'source', 'severity', 'raw_log', 'advanced_metadata', 'user', 'action', 'object']
+=== Cell 4 ===
+Schema:
+ 1. event_id
+ 2. timestamp
+ 3. event_type
+ 4. source
+ 5. severity
+ 6. raw_log
+ 7. advanced_metadata
+ 8. user
+ 9. action
+10. object
+11. process_id
+12. parent_process
+13. additional_info
+14. description
+15. behavioral_analytics
+16. device_type
+17. device_id
+18. firmware_version
+19. src_ip
+20. dst_ip
+21. alert_type
+22. signature_id
+23. category
+24. cloud_service
+25. resource_id
+26. model_id
+27. input_hash
+28. output_hash
+29. src_port
+30. dst_port
+31. protocol
+32. bytes
+33. duration
+34. method
+35. mac_address
+
+Sample records (trimmed to a few high-signal columns):
+{'timestamp': '2025-05-28 23:46:49', 'event_type': 'endpoint', 'source': 'Microsoft Sentinel v1.0.0', 'severity': 'critical', 'user': 'deannataylor', 'action': 'file_access', 'src_ip': '', 'alert_type': '', 'device_type': '', 'cloud_service': '', 'model_id': ''}
+{'timestamp': '2025-01-22 04:17:38', 'event_type': 'iot', 'source': 'AlienVault v5.7.0', 'severity': 'low', 'user': '', 'action': 'side_channel', 'src_ip': '', 'alert_type': '', 'device_type': 'HVAC', 'cloud_service': '', 'model_id': ''}
+{'timestamp': '2025-03-21 10:03:20', 'event_type': 'ids_alert', 'source': 'Carbon Black v7.8.0', 'severity': 'critical', 'user': '', 'action': '', 'src_ip': '54.159.34.148', 'alert_type': 'Credential Stuffing', 'device_type': '', 'cloud_service': '', 'model_id': ''}
+{'timestamp': '2025-02-06 17:38:03', 'event_type': 'iot', 'source': 'Zeek v5.0.0', 'severity': 'info', 'user': '', 'action': 'sensor_spoofing', 'src_ip': '', 'alert_type': '', 'device_type': 'HVAC', 'cloud_service': '', 'model_id': ''}
+{'timestamp': '2025-07-06 09:24:23', 'event_type': 'cloud', 'source': 'Wazuh v4.5.0', 'severity': 'info', 'user': 'browndon', 'action': 'crypto_mining', 'src_ip': '', 'alert_type': '', 'device_type': '', 'cloud_service': 'GCP', 'model_id': ''}
+=== Cell 6 ===
+Columns with the most missing values:
+behavioral_analytics   present=10,060 missing=89,940 present_pct= 10.06%
+device_type            present=12,434 missing=87,566 present_pct= 12.43%
+device_id              present=12,434 missing=87,566 present_pct= 12.43%
+firmware_version       present=12,434 missing=87,566 present_pct= 12.43%
+src_port               present=12,448 missing=87,552 present_pct= 12.45%
+dst_port               present=12,448 missing=87,552 present_pct= 12.45%
+duration               present=12,448 missing=87,552 present_pct= 12.45%
+alert_type             present=12,500 missing=87,500 present_pct= 12.50%
+signature_id           present=12,500 missing=87,500 present_pct= 12.50%
+category               present=12,500 missing=87,500 present_pct= 12.50%
+cloud_service          present=12,511 missing=87,489 present_pct= 12.51%
+resource_id            present=12,511 missing=87,489 present_pct= 12.51%
+method                 present=12,516 missing=87,484 present_pct= 12.52%
+mac_address            present=12,516 missing=87,484 present_pct= 12.52%
+object                 present=12,589 missing=87,411 present_pct= 12.59%
+process_id             present=12,589 missing=87,411 present_pct= 12.59%
+parent_process         present=12,589 missing=87,411 present_pct= 12.59%
+model_id               present=12,667 missing=87,333 present_pct= 12.67%
+input_hash             present=12,667 missing=87,333 present_pct= 12.67%
+output_hash            present=12,667 missing=87,333 present_pct= 12.67%
+
+Columns that are fully populated:
+event_id (100.00% present)
+timestamp (100.00% present)
+event_type (100.00% present)
+source (100.00% present)
+severity (100.00% present)
+raw_log (100.00% present)
+advanced_metadata (100.00% present)
+additional_info (100.00% present)
+description (100.00% present)
+=== Cell 8 ===
+Timestamp range:
+Min: 2020-07-12 21:38:20
+Max: 2030-07-10 06:49:21
+Rows outside 2025: 4,931 (4.93%)
+
+Top months:
+2025-05: 16,436
+2025-03: 16,220
+2025-04: 15,872
+2025-06: 15,750
+2025-02: 14,781
+2025-01: 10,370
+2025-07: 5,640
+2021-08: 68
+2023-11: 67
+2026-10: 66
+2029-12: 65
+2023-12: 64
+
+Weekday distribution:
+Wednesday  14,542
+Thursday   14,478
+Monday     14,436
+Tuesday    14,279
+Sunday     14,259
+Friday     14,025
+Saturday   13,981
+
+Top hours:
+18:00 -> 4,292
+16:00 -> 4,251
+10:00 -> 4,242
+21:00 -> 4,240
+20:00 -> 4,238
+06:00 -> 4,220
+17:00 -> 4,215
+23:00 -> 4,211
+00:00 -> 4,202
+02:00 -> 4,184
+=== Cell 10 ===
+Event types:
+ai           12,667 ( 12.67%)
+endpoint     12,589 ( 12.59%)
+auth         12,516 ( 12.52%)
+cloud        12,511 ( 12.51%)
+ids_alert    12,500 ( 12.50%)
+firewall     12,448 ( 12.45%)
+iot          12,434 ( 12.43%)
+network      12,335 ( 12.34%)
+
+Severity levels:
+medium       20,639 ( 20.64%)
+low          20,507 ( 20.51%)
+high         20,496 ( 20.50%)
+info         18,127 ( 18.13%)
+critical     17,711 ( 17.71%)
+emergency     2,520 (  2.52%)
+
+Top sources:
+ArcSight v7.4.0               5,134
+OSSEC v3.7.0                  5,101
+AlienVault v5.7.0             5,080
+FireEye HX v4.5.0             5,078
+CrowdStrike v6.45.0           5,069
+Zeek v5.0.0                   5,026
+Splunk v9.0.2                 5,021
+Suricata v6.0.10              5,006
+Trellix v10.7.0               4,995
+Palo Alto Cortex v3.0.0       4,994
+Wazuh v4.5.0                  4,986
+Tanium v7.4.0                 4,981
+Carbon Black v7.8.0           4,977
+QRadar v7.5.0                 4,973
+Microsoft Sentinel v1.0.0     4,972
+=== Cell 12 ===
+
+Event type: ai (rows=12,667)
+  user            12,667 (100.00%)
+  action          12,667 (100.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type          0 (  0.00%)
+  src_ip               0 (  0.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service        0 (  0.00%)
+  model_id        12,667 (100.00%)
+  protocol             0 (  0.00%)
+  bytes                0 (  0.00%)
+  duration             0 (  0.00%)
+
+Event type: auth (rows=12,516)
+  user            12,516 (100.00%)
+  action          12,516 (100.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type          0 (  0.00%)
+  src_ip          12,516 (100.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service        0 (  0.00%)
+  model_id             0 (  0.00%)
+  protocol             0 (  0.00%)
+  bytes                0 (  0.00%)
+  duration             0 (  0.00%)
+
+Event type: cloud (rows=12,511)
+  user            12,511 (100.00%)
+  action          12,511 (100.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type          0 (  0.00%)
+  src_ip               0 (  0.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service   12,511 (100.00%)
+  model_id             0 (  0.00%)
+  protocol             0 (  0.00%)
+  bytes                0 (  0.00%)
+  duration             0 (  0.00%)
+
+Event type: endpoint (rows=12,589)
+  user            12,589 (100.00%)
+  action          12,589 (100.00%)
+  object          12,589 (100.00%)
+  process_id      12,589 (100.00%)
+  parent_process  12,589 (100.00%)
+  device_type          0 (  0.00%)
+  src_ip               0 (  0.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service        0 (  0.00%)
+  model_id             0 (  0.00%)
+  protocol             0 (  0.00%)
+  bytes                0 (  0.00%)
+  duration             0 (  0.00%)
+
+Event type: firewall (rows=12,448)
+  user                 0 (  0.00%)
+  action          12,448 (100.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type          0 (  0.00%)
+  src_ip          12,448 (100.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service        0 (  0.00%)
+  model_id             0 (  0.00%)
+  protocol        12,448 (100.00%)
+  bytes           12,448 (100.00%)
+  duration        12,448 (100.00%)
+
+Event type: ids_alert (rows=12,500)
+  user                 0 (  0.00%)
+  action               0 (  0.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type          0 (  0.00%)
+  src_ip          12,500 (100.00%)
+  alert_type      12,500 (100.00%)
+  category        12,500 (100.00%)
+  cloud_service        0 (  0.00%)
+  model_id             0 (  0.00%)
+  protocol             0 (  0.00%)
+  bytes                0 (  0.00%)
+  duration             0 (  0.00%)
+
+Event type: iot (rows=12,434)
+  user                 0 (  0.00%)
+  action          12,434 (100.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type     12,434 (100.00%)
+  src_ip               0 (  0.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service        0 (  0.00%)
+  model_id             0 (  0.00%)
+  protocol             0 (  0.00%)
+  bytes                0 (  0.00%)
+  duration             0 (  0.00%)
+
+Event type: network (rows=12,335)
+  user                 0 (  0.00%)
+  action          12,335 (100.00%)
+  object               0 (  0.00%)
+  process_id           0 (  0.00%)
+  parent_process       0 (  0.00%)
+  device_type          0 (  0.00%)
+  src_ip          12,335 (100.00%)
+  alert_type           0 (  0.00%)
+  category             0 (  0.00%)
+  cloud_service        0 (  0.00%)
+  model_id             0 (  0.00%)
+  protocol        12,335 (100.00%)
+  bytes           12,335 (100.00%)
+  duration             0 (  0.00%)
+=== Cell 14 ===
+
+Event type: ai
+  critical    2,596 ( 20.49%)
+  high        2,506 ( 19.78%)
+  medium      2,515 ( 19.85%)
+  low         2,419 ( 19.10%)
+  info        2,631 ( 20.77%)
+
+Event type: auth
+  high        3,141 ( 25.10%)
+  medium      3,110 ( 24.85%)
+  low         3,116 ( 24.90%)
+  info        3,149 ( 25.16%)
+
+Event type: cloud
+  critical    2,491 ( 19.91%)
+  high        2,481 ( 19.83%)
+  medium      2,508 ( 20.05%)
+  low         2,507 ( 20.04%)
+  info        2,524 ( 20.17%)
+
+Event type: endpoint
+  critical    2,617 ( 20.79%)
+  high        2,486 ( 19.75%)
+  medium      2,517 ( 19.99%)
+  low         2,527 ( 20.07%)
+  info        2,442 ( 19.40%)
+
+Event type: firewall
+  critical    2,546 ( 20.45%)
+  high        2,467 ( 19.82%)
+  medium      2,435 ( 19.56%)
+  low         2,515 ( 20.20%)
+  info        2,485 ( 19.96%)
+
+Event type: ids_alert
+  emergency   2,520 ( 20.16%)
+  critical    2,507 ( 20.06%)
+  high        2,449 ( 19.59%)
+  medium      2,555 ( 20.44%)
+  low         2,469 ( 19.75%)
+
+Event type: iot
+  critical    2,448 ( 19.69%)
+  high        2,468 ( 19.85%)
+  medium      2,528 ( 20.33%)
+  low         2,513 ( 20.21%)
+  info        2,477 ( 19.92%)
+
+Event type: network
+  critical    2,506 ( 20.32%)
+  high        2,498 ( 20.25%)
+  medium      2,471 ( 20.03%)
+  low         2,441 ( 19.79%)
+  info        2,419 ( 19.61%)
+=== Cell 16 ===
+Risk score summary:
+  count=100,000 avg=50.00 min=0.00 max=100.00
+Confidence summary:
+  count=100,000 avg=0.499 min=0.00 max=1.00
+
+Top geolocations:
+China                 1,666
+Iran                  1,646
+North Korea           1,219
+Russia                1,207
+Congo                   764
+Korea                   702
+Argentina               444
+Timor-Leste             435
+Eritrea                 433
+North Macedonia         432
+Zimbabwe                431
+Guinea                  430
+Kazakhstan              430
+Montserrat              427
+Jersey                  427
+=== Cell 18 ===
+Rows with behavioral analytics: 10,060 (10.06%)
+Average baseline deviation: 1.749
+Average entropy: 4.970
+Frequency anomaly=True: 4,983
+Sequence anomaly=True: 4,993
+=== Cell 20 ===
+Top actions:
+api_abuse                     2,935
+bypass                        2,172
+locked                        2,095
+log-only                      2,091
+inspect                       2,088
+failed                        2,086
+allow                         2,081
+drop                          2,080
+success                       2,067
+deny                          2,066
+challenge                     2,054
+timeout                       2,042
+quarantine                    2,042
+latency_spike                 1,646
+model_access                  1,613
+adversarial_input             1,606
+fine_tuning                   1,593
+training_data_poisoning       1,591
+disconnection                 1,578
+physical_tamper               1,576
+
+Top protocols:
+TCP         3,827
+ICMP        3,723
+UDP         3,676
+HTTPS       3,673
+HTTP        3,637
+SSH         1,290
+RDP         1,277
+NTP         1,246
+DNS         1,224
+SMB         1,210
+
+Top IDS alert types:
+Zero-Day Exploit            810
+MFA Bypass                  791
+Credential Stuffing         784
+Supply Chain Compromise     767
+XSS                         762
+Brute Force                 749
+Port Scan                   744
+DNS Tunneling               738
+DDoS                        735
+Living-off-the-Land         728
+ICS Attack                  716
+Cloud API Abuse             711
+Container Escape            702
+Domain Fronting             699
+Fileless Attack             698
+
+Top IDS categories:
+Evasion       2,556
+Policy        2,534
+Recon         2,509
+Malware       2,453
+Exploit       2,448
+
+Cloud services:
+GCP         2,545
+OCI         2,526
+Alibaba     2,488
+AWS         2,481
+Azure       2,471
+
+IoT device types:
+Camera        2,591
+HVAC          2,520
+Sensor        2,468
+Medical       2,444
+Thermostat    2,411
+=== Cell 22 ===
+High severity rows: 20,231 (20.23%)
+
+High severity by event type:
+ids_alert     5,027
+endpoint      2,617
+ai            2,596
+firewall      2,546
+network       2,506
+cloud         2,491
+iot           2,448
+
+High severity by source:
+Zeek v5.0.0                   1,072
+OSSEC v3.7.0                  1,068
+CrowdStrike v6.45.0           1,050
+Microsoft Sentinel v1.0.0     1,044
+Wazuh v4.5.0                  1,041
+QRadar v7.5.0                 1,039
+Carbon Black v7.8.0           1,032
+Palo Alto Cortex v3.0.0       1,027
+Vectra AI v5.0.0              1,015
+AlienVault v5.7.0             1,003
+Tanium v7.4.0                   999
+ArcSight v7.4.0                 991
+Elastic SIEM v8.9.0             990
+Snort v2.9.20                   989
+Splunk v9.0.2                   988
+
+Top event + severity combinations:
+auth         info        3,149
+auth         high        3,141
+auth         low         3,116
+auth         medium      3,110
+ai           info        2,631
+endpoint     critical    2,617
+ai           critical    2,596
+ids_alert    medium      2,555
+firewall     critical    2,546
+iot          medium      2,528
+endpoint     low         2,527
+cloud        info        2,524
+ids_alert    emergency   2,520
+endpoint     medium      2,517
+ai           medium      2,515
+=== Cell 24 ===
+Analyst comments:
+1. The dataset contains 100,000 events across 8 main event families, which makes it broad enough for cross-domain security analysis.
+2. Missingness is largely structural, not random. Many fields are populated only for the event types where they make sense, such as `model_id` for AI events or `protocol` for network and firewall events.
+3. The timestamp range runs from 2020-07-12 21:38:20 to 2030-07-10 06:49:21. Most events are concentrated in 2025, but 4,931 rows fall outside that year, so time-series conclusions should be made carefully.
+4. Severity is fairly balanced overall, but there are 17,711 critical and 2,520 emergency records, which is a material triage load.
+5. `ids_alert` is the only event family producing emergency records in this dataset, which makes it a strong candidate for first-level escalation review.
+6. `advanced_metadata` is consistently present and provides stable enrichment, with an average risk score of 50.00 and average confidence of 0.499.
+7. `behavioral_analytics` is available for only 10,060 rows (10.06%), so anomaly-based conclusions should be limited to that subset.
+8. The action vocabulary shows that the dataset covers modern threat themes including prompt injection, training data poisoning, crypto mining, command injection, credential abuse, and endpoint persistence behavior.
+9. High-severity records are spread across many vendors, so there is no single source dominating alert quality. That suggests the data is synthetic or intentionally balanced rather than organically collected from one environment.
+10. As a next step, the best follow-on analyses would be event chaining by user or IP, outlier scoring on risk and confidence, and building event-type-specific detection dashboards.
+=== Cell 25 ===
+Gemini API key detected via .env/environment. Model: gemini-2.5-flash
+=== Cell 27 ===
+Correlation method:
+- Same normalized source IP
+- Same minute-level timestamp bucket
+- Unique event-type pairs per bucket
+- Buckets with 2+ event families: 2,888
+
+Top co-occurring event pairs:
+ai           + cloud           537
+ai           + iot             531
+cloud        + endpoint        526
+ai           + endpoint        514
+endpoint     + iot             511
+cloud        + iot             464
+
+Event co-occurrence matrix (same source, same minute):
+event_type            ai    endpoint        auth       cloud   ids_alert    firewall         iot     network
+ai                     -         514           0         537           0           0         531           0
+endpoint             514           -           0         526           0           0         511           0
+auth                   0           0           -           0           0           0           0           0
+cloud                537         526           0           -           0           0         464           0
+ids_alert              0           0           0           0           -           0           0           0
+firewall               0           0           0           0           0           -           0           0
+iot                  531         511           0         464           0           0           -           0
+network                0           0           0           0           0           0           0           -
+=== Cell 29 ===
+Risk matrix summary:
+- Source is normalized to src_ip or unknown when src_ip is missing
+- critical_plus_pct = (critical + emergency) / total events
+- high_plus_pct = (high + critical + emergency) / total events
+
+Top sources by total event volume:
+source                total  critical+   critical+%     high+%
+unknown              50,201     10,152       20.22%     40.03%
+10.68.21.231              2          1       50.00%     50.00%
+10.225.178.90             2          0        0.00%      0.00%
+10.119.245.210            2          0        0.00%      0.00%
+54.159.34.148             1          1      100.00%    100.00%
+11.167.185.171            1          0        0.00%      0.00%
+154.67.212.53             1          0        0.00%    100.00%
+66.38.201.234             1          0        0.00%      0.00%
+114.244.55.219            1          0        0.00%    100.00%
+200.110.243.90            1          0        0.00%      0.00%
+
+Top sources by critical/emergency concentration (minimum 25 events):
+source                total    emerg     crit   critical+%     high+%
+unknown              50,201        0   10,152       20.22%     40.03%
+
+Risk matrix for top 8 sources by volume:
+source              emergenc  critical      high    medium       low      info
+unknown                    0    10,152     9,941    10,068     9,966    10,074
+10.68.21.231               0         1         0         1         0         0
+10.225.178.90              0         0         0         1         1         0
+10.119.245.210             0         0         0         1         0         1
+54.159.34.148              0         1         0         0         0         0
+11.167.185.171             0         0         0         0         0         1
+154.67.212.53              0         0         1         0         0         0
+66.38.201.234              0         0         0         1         0         0
+=== Cell 31 ===
+Saved visualization files:
+- visualizations\overview_dashboard.png
+- visualizations\event_cooccurrence_heatmap.png
+- visualizations\source_risk_heatmap.png
+=== Cell 33 ===
+                             Metric  ...                                     Interpretation
+0                   Overall posture  ...  Derived from critical-event load, risk-band vo...
+1                 Total SIEM events  ...     Total record volume processed by the notebook.
+2       Critical + emergency events  ...  Immediate-response workload based on severity ...
+3    High or higher severity events  ...  Broader urgent queue including high, critical,...
+4                  Risk score >= 60  ...  Events in confirmed-threat or critical-threat ...
+5                Average risk score  ...  Mean of advanced_metadata risk scores across t...
+6          Average confidence score  ...  Mean confidence attached to the advanced metad...
+7                  Top event family  ...         Most common telemetry type in the dataset.
+8              Top source by volume  ...  Largest source bucket after src_ip normalization.
+9   Most concentrated severe source  ...  Source with the highest share of critical/emer...
+10    Behavioral analytics coverage  ...  Share of records carrying behavioral analytics...
+
+[11 rows x 3 columns]
+Saved executive summary table to: report_outputs\executive_summary_template.csv
+Saved executive summary chart to: report_outputs\executive_summary_template_chart.png

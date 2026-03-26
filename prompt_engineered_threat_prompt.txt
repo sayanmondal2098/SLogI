@@ -1,0 +1,879 @@
+SYSTEM PROMPT
+
+You are a senior SOC threat analyst performing structured threat analysis from a SIEM dataset summary. Use only the supplied evidence. Do not invent incidents, affected assets, threat actors, or CVEs that are not in the data. Treat the metric rubric as binding: risk score, confidence score, severity, and z-score definitions must drive your reasoning. When evidence is ambiguous, say so and identify false-positive risk. Return JSON only and do not wrap it in markdown fences, prose, or commentary. Return strict JSON only, with these keys: overall_posture, executive_summary, priority_findings, attack_patterns, false_positive_risks, recommended_actions, triage_sla. priority_findings must be an array of objects with keys: finding, classification, severity, confidence_level, evidence, rationale, recommended_action. attack_patterns must be an array of objects with keys: pattern, supporting_evidence, analyst_judgment. recommended_actions must contain immediate, next_24_hours, next_7_days arrays. triage_sla must map emergency, critical, high, medium, low, info to response guidance.
+
+USER PROMPT
+
+Analyze the following SIEM dataset context using the provided metric rubric. Classify threat posture, identify the most important attack patterns, flag false-positive risk, and recommend triage actions. The response must be a single valid JSON object matching the required schema exactly.
+
+Dataset context JSON:
+{
+  "generated_at_utc": "2026-03-26T15:33:44.149914+00:00",
+  "dataset": {
+    "row_count": 100000,
+    "time_range": {
+      "start": "2020-07-12 21:38:20",
+      "end": "2030-07-10 06:49:21",
+      "outside_2025_rows": 4931,
+      "outside_2025_pct": 4.93
+    },
+    "event_type_counts": [
+      {
+        "label": "ai",
+        "count": 12667,
+        "pct": 12.67
+      },
+      {
+        "label": "endpoint",
+        "count": 12589,
+        "pct": 12.59
+      },
+      {
+        "label": "auth",
+        "count": 12516,
+        "pct": 12.52
+      },
+      {
+        "label": "cloud",
+        "count": 12511,
+        "pct": 12.51
+      },
+      {
+        "label": "ids_alert",
+        "count": 12500,
+        "pct": 12.5
+      },
+      {
+        "label": "firewall",
+        "count": 12448,
+        "pct": 12.45
+      },
+      {
+        "label": "iot",
+        "count": 12434,
+        "pct": 12.43
+      },
+      {
+        "label": "network",
+        "count": 12335,
+        "pct": 12.34
+      }
+    ],
+    "severity_counts": [
+      {
+        "label": "medium",
+        "count": 20639,
+        "pct": 20.64
+      },
+      {
+        "label": "low",
+        "count": 20507,
+        "pct": 20.51
+      },
+      {
+        "label": "high",
+        "count": 20496,
+        "pct": 20.5
+      },
+      {
+        "label": "info",
+        "count": 18127,
+        "pct": 18.13
+      },
+      {
+        "label": "critical",
+        "count": 17711,
+        "pct": 17.71
+      },
+      {
+        "label": "emergency",
+        "count": 2520,
+        "pct": 2.52
+      }
+    ],
+    "top_actions": [
+      {
+        "label": "api_abuse",
+        "count": 2935,
+        "pct": 2.94
+      },
+      {
+        "label": "bypass",
+        "count": 2172,
+        "pct": 2.17
+      },
+      {
+        "label": "locked",
+        "count": 2095,
+        "pct": 2.1
+      },
+      {
+        "label": "log-only",
+        "count": 2091,
+        "pct": 2.09
+      },
+      {
+        "label": "inspect",
+        "count": 2088,
+        "pct": 2.09
+      },
+      {
+        "label": "failed",
+        "count": 2086,
+        "pct": 2.09
+      },
+      {
+        "label": "allow",
+        "count": 2081,
+        "pct": 2.08
+      },
+      {
+        "label": "drop",
+        "count": 2080,
+        "pct": 2.08
+      },
+      {
+        "label": "success",
+        "count": 2067,
+        "pct": 2.07
+      },
+      {
+        "label": "deny",
+        "count": 2066,
+        "pct": 2.07
+      },
+      {
+        "label": "challenge",
+        "count": 2054,
+        "pct": 2.05
+      },
+      {
+        "label": "timeout",
+        "count": 2042,
+        "pct": 2.04
+      },
+      {
+        "label": "quarantine",
+        "count": 2042,
+        "pct": 2.04
+      },
+      {
+        "label": "latency_spike",
+        "count": 1646,
+        "pct": 1.65
+      },
+      {
+        "label": "model_access",
+        "count": 1613,
+        "pct": 1.61
+      }
+    ]
+  },
+  "metrics": {
+    "risk_score": {
+      "average": 50.0,
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "bands": [
+        {
+          "label": "High risk",
+          "count": 38166,
+          "pct": 38.17
+        },
+        {
+          "label": "Confirmed threat",
+          "count": 24420,
+          "pct": 24.42
+        },
+        {
+          "label": "Suspicious behavior",
+          "count": 24043,
+          "pct": 24.04
+        },
+        {
+          "label": "Normal activity",
+          "count": 6752,
+          "pct": 6.75
+        },
+        {
+          "label": "Critical threat",
+          "count": 6619,
+          "pct": 6.62
+        }
+      ]
+    },
+    "confidence_score": {
+      "average": 0.499,
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "bands": [
+        {
+          "label": "Medium confidence",
+          "count": 29936,
+          "pct": 29.94
+        },
+        {
+          "label": "Low confidence",
+          "count": 29593,
+          "pct": 29.59
+        },
+        {
+          "label": "Very high confidence",
+          "count": 20454,
+          "pct": 20.45
+        },
+        {
+          "label": "High confidence",
+          "count": 20017,
+          "pct": 20.02
+        }
+      ]
+    },
+    "z_score": {
+      "significant_anomalies": 1,
+      "extreme_outliers": 1,
+      "top_sources": [
+        {
+          "src_ip": "unknown",
+          "event_count": 50201,
+          "event_pct": 50.2,
+          "z_score": 223.15,
+          "z_score_band": "Extreme outlier",
+          "avg_risk_score": 49.98,
+          "avg_confidence": 0.499,
+          "high_severity_count": 10152,
+          "high_severity_pct": 20.22
+        },
+        {
+          "src_ip": "10.68.21.231",
+          "event_count": 2,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 49.48,
+          "avg_confidence": 0.61,
+          "high_severity_count": 1,
+          "high_severity_pct": 50.0
+        },
+        {
+          "src_ip": "10.225.178.90",
+          "event_count": 2,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 57.59,
+          "avg_confidence": 0.515,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "10.119.245.210",
+          "event_count": 2,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 67.44,
+          "avg_confidence": 0.23,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "54.159.34.148",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 69.05,
+          "avg_confidence": 0.84,
+          "high_severity_count": 1,
+          "high_severity_pct": 100.0
+        },
+        {
+          "src_ip": "11.167.185.171",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 27.47,
+          "avg_confidence": 0.5,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "154.67.212.53",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 52.3,
+          "avg_confidence": 0.89,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "66.38.201.234",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 23.98,
+          "avg_confidence": 0.83,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "114.244.55.219",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 32.24,
+          "avg_confidence": 0.36,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "200.110.243.90",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 97.38,
+          "avg_confidence": 0.71,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "196.221.103.178",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 52.07,
+          "avg_confidence": 0.19,
+          "high_severity_count": 1,
+          "high_severity_pct": 100.0
+        },
+        {
+          "src_ip": "18.11.108.18",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 35.93,
+          "avg_confidence": 0.8,
+          "high_severity_count": 1,
+          "high_severity_pct": 100.0
+        },
+        {
+          "src_ip": "60.224.125.192",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 42.8,
+          "avg_confidence": 0.72,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "81.246.43.100",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 72.71,
+          "avg_confidence": 0.67,
+          "high_severity_count": 0,
+          "high_severity_pct": 0.0
+        },
+        {
+          "src_ip": "179.60.117.219",
+          "event_count": 1,
+          "event_pct": 0.0,
+          "z_score": -0.0,
+          "z_score_band": "Normal range",
+          "avg_risk_score": 61.69,
+          "avg_confidence": 0.17,
+          "high_severity_count": 1,
+          "high_severity_pct": 100.0
+        }
+      ]
+    },
+    "behavioral_analytics": {
+      "rows_with_behavioral_data": 10060,
+      "rows_with_behavioral_data_pct": 10.06,
+      "frequency_anomaly_true": 4983,
+      "sequence_anomaly_true": 4993
+    }
+  },
+  "event_pairings": [
+    {
+      "pair": [
+        "ai",
+        "cloud"
+      ],
+      "count": 537
+    },
+    {
+      "pair": [
+        "ai",
+        "iot"
+      ],
+      "count": 531
+    },
+    {
+      "pair": [
+        "cloud",
+        "endpoint"
+      ],
+      "count": 526
+    },
+    {
+      "pair": [
+        "ai",
+        "endpoint"
+      ],
+      "count": 514
+    },
+    {
+      "pair": [
+        "endpoint",
+        "iot"
+      ],
+      "count": 511
+    },
+    {
+      "pair": [
+        "cloud",
+        "iot"
+      ],
+      "count": 464
+    }
+  ],
+  "theme_counts": [
+    {
+      "theme": "ai_model_abuse",
+      "count": 10372,
+      "pct": 10.37
+    },
+    {
+      "theme": "credential_abuse",
+      "count": 7928,
+      "pct": 7.93
+    },
+    {
+      "theme": "data_theft_and_resource_abuse",
+      "count": 7489,
+      "pct": 7.49
+    },
+    {
+      "theme": "malware_and_evasion",
+      "count": 4186,
+      "pct": 4.19
+    }
+  ],
+  "priority_cases": [
+    {
+      "event_id": "21efd1f0-567a-4a6e-a8ef-05bb5f5b1f70",
+      "timestamp": "2025-03-09 16:20:05",
+      "event_type": "endpoint",
+      "source": "Microsoft Sentinel v1.0.0",
+      "user": "lawrencerobin",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "file_access",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 97.0,
+      "risk_band": "Critical threat",
+      "confidence": 0.8,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": true,
+      "sequence_anomaly": true,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 108.5,
+      "recommended_owner": "Endpoint Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Inspect the affected host for file, process, and parent-child execution activity. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=97.0 (Critical threat); confidence=0.8 (Very high confidence); z_score=223.15 (Extreme outlier); behavioral_flags=frequency:True sequence:True",
+      "detailed_classification_reason": "Risk score 97.0 is in the Critical threat band (>=80) and confidence 0.8 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Behavioral analytics flags are present: frequency_anomaly=True, sequence_anomaly=True. Observed action 'file_access' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "96126303-1b36-46c4-8f99-9243eda779af",
+      "timestamp": "2025-04-01 02:27:12",
+      "event_type": "endpoint",
+      "source": "Vectra AI v5.0.0",
+      "user": "beasleybilly",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "process_stop",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 100.0,
+      "risk_band": "Critical threat",
+      "confidence": 0.94,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": true,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 107.8,
+      "recommended_owner": "Endpoint Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Inspect the affected host for file, process, and parent-child execution activity. Capture process lineage and determine whether execution was authorized. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=100.0 (Critical threat); confidence=0.94 (Very high confidence); z_score=223.15 (Extreme outlier); behavioral_flags=frequency:True sequence:False",
+      "detailed_classification_reason": "Risk score 100.0 is in the Critical threat band (>=80) and confidence 0.94 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Behavioral analytics flags are present: frequency_anomaly=True, sequence_anomaly=False. Observed action 'process_stop' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "b3755bad-26b4-41b4-bbfb-e945e22d056c",
+      "timestamp": "2025-05-11 05:20:47",
+      "event_type": "cloud",
+      "source": "Carbon Black v7.8.0",
+      "user": "onealkristen",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "container_escape",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "OCI",
+      "model_id": "none",
+      "risk_score": 93.67,
+      "risk_band": "Critical threat",
+      "confidence": 0.97,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": true,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 105.23,
+      "recommended_owner": "Cloud Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Review cloud API activity, impacted resources, and identity exposure for the session. Audit affected identities, tokens, and cloud resource permissions. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=93.67 (Critical threat); confidence=0.97 (Very high confidence); z_score=223.15 (Extreme outlier); behavioral_flags=frequency:False sequence:True",
+      "detailed_classification_reason": "Risk score 93.67 is in the Critical threat band (>=80) and confidence 0.97 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Behavioral analytics flags are present: frequency_anomaly=False, sequence_anomaly=True. Observed action 'container_escape' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "a041fbb7-ba8f-4929-8e71-9a529828e33a",
+      "timestamp": "2025-02-07 13:17:01",
+      "event_type": "cloud",
+      "source": "ArcSight v7.4.0",
+      "user": "masontina",
+      "severity": "high",
+      "severity_weight": 6,
+      "action": "api_abuse",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "OCI",
+      "model_id": "none",
+      "risk_score": 95.65,
+      "risk_band": "Critical threat",
+      "confidence": 0.97,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": true,
+      "sequence_anomaly": true,
+      "classification": "Critical threat",
+      "response_window": "Respond within 24 hours",
+      "composite_score": 105.22,
+      "recommended_owner": "Cloud Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Review cloud API activity, impacted resources, and identity exposure for the session. Audit affected identities, tokens, and cloud resource permissions. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=high; risk=95.65 (Critical threat); confidence=0.97 (Very high confidence); z_score=223.15 (Extreme outlier); behavioral_flags=frequency:True sequence:True",
+      "detailed_classification_reason": "Risk score 95.65 is in the Critical threat band (>=80) and confidence 0.97 is Very high (>=0.8). Severity=high increases urgency and sets the response window to 'Respond within 24 hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Behavioral analytics flags are present: frequency_anomaly=True, sequence_anomaly=True. Observed action 'api_abuse' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "921ab398-d761-4436-aba5-e6bcd0777936",
+      "timestamp": "2022-10-16 23:43:48",
+      "event_type": "ai",
+      "source": "Splunk v9.0.2",
+      "user": "sarahlarsen",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "membership_inference",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "model-e09e80a5",
+      "risk_score": 97.78,
+      "risk_band": "Critical threat",
+      "confidence": 0.86,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": true,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 105.09,
+      "recommended_owner": "AI Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Review model prompts, inputs, and outputs for abuse, poisoning, or extraction indicators. Scope AI-service exposure and preserve prompt or model access logs. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=97.78 (Critical threat); confidence=0.86 (Very high confidence); z_score=223.15 (Extreme outlier); behavioral_flags=frequency:True sequence:False",
+      "detailed_classification_reason": "Risk score 97.78 is in the Critical threat band (>=80) and confidence 0.86 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Behavioral analytics flags are present: frequency_anomaly=True, sequence_anomaly=False. Observed action 'membership_inference' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "c8119fec-13df-40cb-92b8-2fbb9d154891",
+      "timestamp": "2025-04-16 11:56:46",
+      "event_type": "ai",
+      "source": "Microsoft Sentinel v1.0.0",
+      "user": "cynthiapennington",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "training_data_poisoning",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "model-d9deab4a",
+      "risk_score": 98.96,
+      "risk_band": "Critical threat",
+      "confidence": 0.77,
+      "confidence_band": "High confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": true,
+      "sequence_anomaly": false,
+      "classification": "Confirmed threat",
+      "response_window": "Respond within hours",
+      "composite_score": 103.88,
+      "recommended_owner": "AI Security / SOC",
+      "recommended_action": "Assign to an analyst for same-day investigation and scoping. Review model prompts, inputs, and outputs for abuse, poisoning, or extraction indicators. Scope AI-service exposure and preserve prompt or model access logs. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=98.96 (Critical threat); confidence=0.77 (High confidence); z_score=223.15 (Extreme outlier); behavioral_flags=frequency:True sequence:False",
+      "detailed_classification_reason": "Risk score 98.96 is in the confirmed-threat range (>=60) and confidence 0.77 is high enough (>=0.6) to move beyond suspicion. Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Behavioral analytics flags are present: frequency_anomaly=True, sequence_anomaly=False. Observed action 'training_data_poisoning' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "f848352b-b5b8-465d-8022-d4c52e1a7f17",
+      "timestamp": "2025-05-18 23:15:43",
+      "event_type": "ai",
+      "source": "QRadar v7.5.0",
+      "user": "lauren15",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "training_data_poisoning",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "model-b9ef2f9a",
+      "risk_score": 100.0,
+      "risk_band": "Critical threat",
+      "confidence": 0.99,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 103.8,
+      "recommended_owner": "AI Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Review model prompts, inputs, and outputs for abuse, poisoning, or extraction indicators. Scope AI-service exposure and preserve prompt or model access logs. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=100.0 (Critical threat); confidence=0.99 (Very high confidence); z_score=223.15 (Extreme outlier)",
+      "detailed_classification_reason": "Risk score 100.0 is in the Critical threat band (>=80) and confidence 0.99 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Observed action 'training_data_poisoning' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "26da51f5-4862-4da6-8fe3-639639385a98",
+      "timestamp": "2025-05-09 10:58:11",
+      "event_type": "iot",
+      "source": "FireEye HX v4.5.0",
+      "user": "none",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "sensor_spoofing",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "Camera",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 99.56,
+      "risk_band": "Critical threat",
+      "confidence": 0.97,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 103.18,
+      "recommended_owner": "IoT / OT Security",
+      "recommended_action": "Escalate immediately and validate containment status. Check device state, firmware, and network isolation controls for the impacted IoT asset. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=99.56 (Critical threat); confidence=0.97 (Very high confidence); z_score=223.15 (Extreme outlier)",
+      "detailed_classification_reason": "Risk score 99.56 is in the Critical threat band (>=80) and confidence 0.97 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Observed action 'sensor_spoofing' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "d388020d-03ef-4b4e-862d-f3dbd9d671dc",
+      "timestamp": "2025-05-31 13:12:51",
+      "event_type": "iot",
+      "source": "Microsoft Sentinel v1.0.0",
+      "user": "none",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "side_channel",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "HVAC",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 100.0,
+      "risk_band": "Critical threat",
+      "confidence": 0.95,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 103.0,
+      "recommended_owner": "IoT / OT Security",
+      "recommended_action": "Escalate immediately and validate containment status. Check device state, firmware, and network isolation controls for the impacted IoT asset. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=100.0 (Critical threat); confidence=0.95 (Very high confidence); z_score=223.15 (Extreme outlier)",
+      "detailed_classification_reason": "Risk score 100.0 is in the Critical threat band (>=80) and confidence 0.95 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Observed action 'side_channel' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "dafb1b71-ee26-490b-806f-b0246e8df94d",
+      "timestamp": "2025-05-30 06:15:40",
+      "event_type": "endpoint",
+      "source": "LogRhythm v7.5.0",
+      "user": "chelsea52",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "wmi_exec",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 100.0,
+      "risk_band": "Critical threat",
+      "confidence": 0.95,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 103.0,
+      "recommended_owner": "Endpoint Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Inspect the affected host for file, process, and parent-child execution activity. Capture process lineage and determine whether execution was authorized. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=100.0 (Critical threat); confidence=0.95 (Very high confidence); z_score=223.15 (Extreme outlier)",
+      "detailed_classification_reason": "Risk score 100.0 is in the Critical threat band (>=80) and confidence 0.95 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Observed action 'wmi_exec' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "51728ff1-f8d8-4299-a1b1-e2f7d71386a5",
+      "timestamp": "2025-06-12 05:28:14",
+      "event_type": "endpoint",
+      "source": "Wazuh v4.5.0",
+      "user": "jamesstevens",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "powershell_exec",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "none",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 100.0,
+      "risk_band": "Critical threat",
+      "confidence": 0.94,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 102.8,
+      "recommended_owner": "Endpoint Security / SOC",
+      "recommended_action": "Escalate immediately and validate containment status. Inspect the affected host for file, process, and parent-child execution activity. Capture process lineage and determine whether execution was authorized. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=100.0 (Critical threat); confidence=0.94 (Very high confidence); z_score=223.15 (Extreme outlier)",
+      "detailed_classification_reason": "Risk score 100.0 is in the Critical threat band (>=80) and confidence 0.94 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Observed action 'powershell_exec' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    },
+    {
+      "event_id": "78a79e02-1bd6-4867-a868-6e550b96ec9c",
+      "timestamp": "2025-05-05 10:53:10",
+      "event_type": "iot",
+      "source": "QRadar v7.5.0",
+      "user": "none",
+      "severity": "critical",
+      "severity_weight": 8,
+      "action": "command_injection",
+      "src_ip": "unknown",
+      "alert_type": "none",
+      "category": "none",
+      "device_type": "Thermostat",
+      "cloud_service": "none",
+      "model_id": "none",
+      "risk_score": 97.72,
+      "risk_band": "Critical threat",
+      "confidence": 0.98,
+      "confidence_band": "Very high confidence",
+      "source_z_score": 223.15,
+      "z_score_band": "Extreme outlier",
+      "frequency_anomaly": false,
+      "sequence_anomaly": false,
+      "classification": "Critical threat",
+      "response_window": "Respond within hours",
+      "composite_score": 102.46,
+      "recommended_owner": "IoT / OT Security",
+      "recommended_action": "Escalate immediately and validate containment status. Check device state, firmware, and network isolation controls for the impacted IoT asset. Correlate neighboring events from the same source and time window before closing the case. Validate whether missing source attribution is a telemetry issue or a real aggregation point.",
+      "recommendation_rationale": "severity=critical; risk=97.72 (Critical threat); confidence=0.98 (Very high confidence); z_score=223.15 (Extreme outlier)",
+      "detailed_classification_reason": "Risk score 97.72 is in the Critical threat band (>=80) and confidence 0.98 is Very high (>=0.8). Severity=critical increases urgency and sets the response window to 'Respond within hours'. Source z-score 223.15 is an Extreme outlier, which supports escalation and correlation. Observed action 'command_injection' was included in the classification context. The normalized source is 'unknown', so missing attribution may be contributing to a concentrated anomaly cluster."
+    }
+  ],
+  "metric_rubric": {
+    "risk_score": {
+      "0-20": "Normal activity",
+      "20-40": "Suspicious behavior",
+      "40-60": "High risk",
+      "60-80": "Confirmed threat",
+      "80-100": "Critical threat"
+    },
+    "confidence_score": {
+      "0.0-0.3": "Low confidence, likely false positive",
+      "0.3-0.6": "Medium confidence, investigate",
+      "0.6-0.8": "High confidence, likely threat",
+      "0.8-1.0": "Very high confidence, definite threat"
+    },
+    "severity_categories": {
+      "emergency": "System critical, immediate response required",
+      "critical": "Major impact, respond within hours",
+      "high": "Significant impact, respond within 24 hours",
+      "medium": "Notable issue, address within 1 week",
+      "low": "Minor issue, address when convenient",
+      "info": "Informational, for trending/analytics"
+    },
+    "z_score": {
+      "<1.5": "Normal range",
+      "1.5-2.0": "Minor anomaly",
+      "2.0-3.0": "Significant anomaly",
+      ">3.0": "Extreme outlier (definitely investigate)"
+    }
+  }
+}
