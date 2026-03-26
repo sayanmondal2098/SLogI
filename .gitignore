@@ -6,3 +6,6 @@
 /References
 References/*
 __pycache__/
+
+.csv
+.csv.*
